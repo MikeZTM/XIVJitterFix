@@ -1,12 +1,11 @@
+using Dalamud.Game.Command;
+using Dalamud.Interface.ImGuiNotification;
+using Dalamud.Interface.Windowing;
 using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
-using Dalamud.Game;
 using System.Runtime.InteropServices;
-using Dalamud.Interface.Windowing;
-using Dalamud.Game.Command;
 using System;
 using System.Globalization;
-using Dalamud.Interface.ImGuiNotification;
 
 namespace XIVJitterFix;
 
@@ -55,7 +54,10 @@ public sealed class Plugin : IDalamudPlugin
             "/jitterfix jitter <value> → Sets jitter multiplier to a specific value.", ShowInHelp = true 
         });
 
-        hookAddr = sigScanner.GetStaticAddressFromSig("48 89 05 ?? ?? ?? ?? E8 ?? ?? ?? ?? 48 8D 8F ?? ?? ?? ??");
+        hookAddr = sigScanner.GetStaticAddressFromSig("48 8B 05 ?? ?? ?? ?? 0F B6 8B ?? ?? ?? ?? 88 48");
+        InteropGenerator.Runtime.Resolver.GetInstance.Setup();
+        FFXIVClientStructs.Interop.Generated.Addresses.Register();
+        InteropGenerator.Runtime.Resolver.GetInstance.Resolve();
 
         framework.Update += Framework_Update;
         dalamudPluginInterface.UiBuilder.OpenConfigUi += UiBuilder_OpenConfigUi;
@@ -171,6 +173,6 @@ public sealed class Plugin : IDalamudPlugin
         /// FSR = 1, DLSS = 2
         /// </summary>
         [FieldOffset(0x54)] public byte DlssFsrSwitch;
-        [FieldOffset(0x64)] public float JitterMultiplier;
+        [FieldOffset(0x74)] public float JitterMultiplier;
     }
 }
