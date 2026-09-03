@@ -55,9 +55,6 @@ public sealed class Plugin : IDalamudPlugin
         });
 
         hookAddr = sigScanner.GetStaticAddressFromSig("48 8B 05 ?? ?? ?? ?? 0F B6 8B ?? ?? ?? ?? 88 48");
-        InteropGenerator.Runtime.Resolver.GetInstance.Setup();
-        FFXIVClientStructs.Interop.Generated.Addresses.Register();
-        InteropGenerator.Runtime.Resolver.GetInstance.Resolve();
 
         framework.Update += Framework_Update;
         dalamudPluginInterface.UiBuilder.OpenConfigUi += UiBuilder_OpenConfigUi;
