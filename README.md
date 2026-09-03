@@ -10,6 +10,11 @@ This plugin will restore using jitter when talking to NPCs or in cutscenes and g
 
 Jitter (not noticeable micromovements of the camera) is necessary for temporal antialiasing solutions (DLSS, DLAA, TSCMAA+jitter) to work properly. For some reason, SquareEnix decided we don't need jitter during the time where the game benefits from using it the most.
 
+Jitter issues was fixed by SE since patch 7.1 but for some reason some players still getting this issue. This plugin was forked and updated to keep the jitter wokring until SE further fix the issue.
+
 ## How To Use
 
 Install and enable in Dlamauds.
+
+## Credit
+Thanks **darkarchon** for the original work on the plugin. 

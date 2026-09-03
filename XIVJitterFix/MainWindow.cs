@@ -40,6 +40,7 @@ public class MainWindow : Window
             WrapText("This normally happens automatically and so it does in this game, but for some reason SE decided to not jitter during cutscenes, GPose and NPC dialogue.");
             WrapText("You may have noticed that the antialiasing gets worse once you do one of the mentioned tasks. This is because jitter gets disabled.");
             WrapText("From my testing I have found no reason why jitter should ever be disabled and it improves the image quality especially in those situations.");
+            WrapText("Jitter issues are well known fixed since patch 7.1 but still broken for some players so this plugin was revived to fix it again until SE fully fix the issue");
         }
         help.Dispose();
 
