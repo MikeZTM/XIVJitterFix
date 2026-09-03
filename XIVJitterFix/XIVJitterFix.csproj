@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project>
-  <Sdk Name="Dalamud.NET.Sdk" Version="15.0.0" />
-  <PropertyGroup>
-    <Version>0.0.0.5</Version>
-    <Description>A plugin to fix jitter issues in Final Fantasy XIV.</Description>
-    <PackageProjectUrl>https://github.com/MikeZTM/XIVJitterFix</PackageProjectUrl>
-    <PackageLicenseExpression>AGPL-3.0-or-later</PackageLicenseExpression>
-    <IsPackable>false</IsPackable>
-</PropertyGroup>
-<!-- Assets -->
-<ItemGroup>
-    <None Include="Assets\icon.png" Link="images\icon.png" CopyToOutputDirectory="PreserveNewest" />
-</ItemGroup>
+    <Sdk Name="Dalamud.NET.Sdk" Version="15.0.0" />
+    <PropertyGroup>
+        <Version>0.0.0.5</Version>
+        <Description>A plugin to fix jitter issues in Final Fantasy XIV.</Description>
+        <PackageProjectUrl>https://github.com/MikeZTM/XIVJitterFix</PackageProjectUrl>
+        <PackageLicenseExpression>AGPL-3.0-or-later</PackageLicenseExpression>
+        <IsPackable>false</IsPackable>
+    </PropertyGroup>
+    <!-- Build settings -->
+    <PropertyGroup>
+        <OutputPath>..\bin\</OutputPath>
+    </PropertyGroup>
+    <!-- Assets -->
+    <ItemGroup>
+        <None Include="Assets\icon.png" Link="images\icon.png" CopyToOutputDirectory="PreserveNewest" />
+    </ItemGroup>
 </Project>
