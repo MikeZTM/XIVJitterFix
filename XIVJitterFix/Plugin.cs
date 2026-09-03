@@ -14,8 +14,6 @@ namespace XIVJitterFix;
 
 public sealed class Plugin : IDalamudPlugin
 {
-    private readonly nint hookAddr;
-
     private readonly IPluginLog logger;
     private readonly IFramework framework;
     private readonly WindowSystem windowSystem;
@@ -56,8 +54,6 @@ public sealed class Plugin : IDalamudPlugin
             HelpMessage = "Open the XIVJitterFix config window.\n" +
             "/jitterfix jitter <value> → Sets jitter multiplier to a specific value.", ShowInHelp = true 
         });
-
-        hookAddr = sigScanner.GetStaticAddressFromSig("48 8B 05 ?? ?? ?? ?? 0F B6 8B ?? ?? ?? ?? 88 48");
 
         framework.Update += Framework_Update;
         dalamudPluginInterface.UiBuilder.OpenConfigUi += UiBuilder_OpenConfigUi;
