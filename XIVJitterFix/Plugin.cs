@@ -3,9 +3,12 @@ using Dalamud.Interface.ImGuiNotification;
 using Dalamud.Interface.Windowing;
 using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
-using System.Runtime.InteropServices;
+using FFXIVClientStructs.FFXIV.Client.Graphics.Render;
+using FFXIVClientStructs.FFXIV.Common.Lua;
 using System;
+using System.ComponentModel;
 using System.Globalization;
+using System.Runtime.InteropServices;
 
 namespace XIVJitterFix;
 
@@ -103,34 +106,22 @@ public sealed class Plugin : IDalamudPlugin
 
     private unsafe void Framework_Update(IFramework framework)
     {
-        if (hookAddr == nint.Zero) return;
-        var addr1 = *(nint*)hookAddr;
-        if (addr1 == nint.Zero) return;
-
-        ProbablySomeGraphicsConfig* config = (ProbablySomeGraphicsConfig*)addr1;
-
-        var prevValue1 = config->NpcGposeJitter;
-        var prevValue2 = config->CutsceneJitter;
+        var prevValue1 = Marshal.ReadByte((nint) GraphicsConfig.Instance(), 0x19);
+        var prevValue2 = Marshal.ReadByte((nint)GraphicsConfig.Instance(), 0x1a);
 
         if (prevValue1 != 1 || prevValue2 != 1)
         {
-            config->NpcGposeJitter = 1;
-            config->CutsceneJitter = 1;
-            logger.Verbose("Detected change NpcGpose {0} / Cutscene {1} -> NpcGpose {2} / Cutscene {3}", prevValue1, prevValue2, config->NpcGposeJitter, config->CutsceneJitter);
+            Marshal.WriteByte((nint)GraphicsConfig.Instance(), 0x19, 1);
+            Marshal.WriteByte((nint)GraphicsConfig.Instance(), 0x1a, 1);
+            logger.Verbose("Detected change NpcGpose {0} / Cutscene {1} -> NpcGpose {2} / Cutscene {3}", prevValue1, prevValue2, 
+                Marshal.ReadByte((nint)GraphicsConfig.Instance(), 0x19), Marshal.ReadByte((nint)GraphicsConfig.Instance(), 0x1a));
         }
 
-        if (pluginConfig.JitterMultiplier != config->JitterMultiplier)
+        if (pluginConfig.JitterMultiplier != GraphicsConfig.Instance() -> JitterMultiplier)
         {
-            logger.Verbose("Detected change JitterMult current {0} -> desired {1}", config->JitterMultiplier, pluginConfig.JitterMultiplier);
+            logger.Verbose("Detected change JitterMult current {0} -> desired {1}", GraphicsConfig.Instance() -> JitterMultiplier, pluginConfig.JitterMultiplier);
 
-            config->JitterMultiplier = pluginConfig.JitterMultiplier;
-        }
-
-        if (pluginConfig.SetDownscaleBuffers && pluginConfig.DownscaleBuffers != config->DownscaleBuffers)
-        {
-            logger.Verbose("Detected change DownscaleBuffers current {0} -> desired {1}", config->DownscaleBuffers, pluginConfig.DownscaleBuffers);
-
-            config->DownscaleBuffers = pluginConfig.DownscaleBuffers;
+            GraphicsConfig.Instance() -> JitterMultiplier = pluginConfig.JitterMultiplier;
         }
     }
 
@@ -143,33 +134,5 @@ public sealed class Plugin : IDalamudPlugin
         dalamudPluginInterface.UiBuilder.Draw -= UiBuilder_Draw;
 
         framework.Update -= Framework_Update;
-    }
-
-    [StructLayout(LayoutKind.Explicit)]
-    public partial struct ProbablySomeGraphicsConfig
-    {
-        [FieldOffset(0x19)] public byte NpcGposeJitter;
-        [FieldOffset(0x1a)] public byte CutsceneJitter;
-
-        /// <summary>
-        /// 0 = nothing, 1 = fxaa, 2 = tscmaa+jitter, 3 = tscmaa
-        /// </summary>
-        [FieldOffset(0x2c)] public byte AntiAliasingMode;
-
-        /// <summary>
-        /// 0 = off, 1 = on
-        /// </summary>
-        [FieldOffset(0x44)] public byte DynamicResolution;
-
-        /// <summary>
-        /// seems like it affects dof/bloom shaders when running dlss or dynamic res
-        /// </summary>
-        [FieldOffset(0x45)] public byte DownscaleBuffers;
-
-        /// <summary>
-        /// FSR = 1, DLSS = 2
-        /// </summary>
-        [FieldOffset(0x54)] public byte DlssFsrSwitch;
-        [FieldOffset(0x74)] public float JitterMultiplier;
     }
 }
