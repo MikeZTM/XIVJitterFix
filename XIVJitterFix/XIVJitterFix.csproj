@@ -10,6 +10,6 @@
 </PropertyGroup>
 <!-- Assets -->
 <ItemGroup>
-    <None Condition="'$(Configuration)' == 'Debug'" Include="Assets\icon.png" Link="images\icon.png" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="Assets\icon.png" Link="images\icon.png" CopyToOutputDirectory="PreserveNewest" />
 </ItemGroup>
 </Project>
