@@ -2,7 +2,7 @@
 <Project>
     <Sdk Name="Dalamud.NET.Sdk" Version="15.0.0" />
     <PropertyGroup>
-        <Version>0.0.0.5</Version>
+        <Version>0.0.0.6</Version>
         <Description>A plugin to fix jitter issues in Final Fantasy XIV.</Description>
         <PackageProjectUrl>https://github.com/MikeZTM/XIVJitterFix</PackageProjectUrl>
         <PackageLicenseExpression>AGPL-3.0-or-later</PackageLicenseExpression>
